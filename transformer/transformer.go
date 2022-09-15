@@ -42,14 +42,6 @@ func TransformToMarkdown(notification model.Notification) (markdown *model.WeCha
 			bufferFiring.WriteString(fmt.Sprintf("\n> **severity:** %s", labels["severity"]))
 			bufferFiring.WriteString(fmt.Sprintf("\n> **status:** <font color=\"warning\">%s</font>", alert.Status))
 			bufferFiring.WriteString(fmt.Sprintf("\n> **instance:** %s", labels["instance"]))
-
-			delete(labels, "alertname")
-			delete(labels, "severity")
-
-			MapToString(&bufferFiring, "annotations", &annotations)
-			MapToString(&bufferFiring, "labels", &labels)
-
-			bufferFiring.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>\n", alert.StartsAt.Format("2006-01-02 15:04:05")))
 		} else {
 			resolvedFlag = true
 			bufferResolved.WriteString(fmt.Sprintf("\n> **alertname: <font color=\"info\">%s</font>**", labels["alertname"]))
@@ -57,17 +49,16 @@ func TransformToMarkdown(notification model.Notification) (markdown *model.WeCha
 			bufferResolved.WriteString(fmt.Sprintf("\n> **status:** <font color=\"info\">%s</font>", alert.Status))
 			bufferResolved.WriteString(fmt.Sprintf("\n> **instance:** %s", labels["instance"]))
 
-			delete(labels, "alertname")
-			delete(labels, "severity")
-
-			MapToString(&bufferResolved, "annotations", &annotations)
-			MapToString(&bufferResolved, "labels", &labels)
-
-			bufferResolved.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>\n", alert.StartsAt.Format("2006-01-02 15:04:05")))
 		}
+		delete(labels, "alertname")
+		delete(labels, "severity")
+
+		MapToString(&bufferResolved, "annotations", &annotations)
+		MapToString(&bufferResolved, "labels", &labels)
+
+		bufferResolved.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>\n", alert.StartsAt.Format("2006-01-02 15:04:05")))
 	}
 
-	fmt.Println(bufferFiring.Len(), bufferResolved.Len())
 	if firingFlag {
 		buffer.WriteString(bufferFiring.String())
 	}
