@@ -1,4 +1,4 @@
-module github.com/k8stech/alertmanager-wechatrobot-webhook
+module wechatrobot
 
 go 1.17
 

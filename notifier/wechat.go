@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/k8stech/alertmanager-wechatrobot-webhook/model"
-	"github.com/k8stech/alertmanager-wechatrobot-webhook/transformer"
+	"wechatrobot/model"
+	"wechatrobot/transformer"
 )
 
 // Send send markdown message to dingtalk

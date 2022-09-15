@@ -4,8 +4,8 @@ import (
 	"flag"
 	"net/http"
 
-	"github.com/k8stech/alertmanager-wechatrobot-webhook/model"
-	"github.com/k8stech/alertmanager-wechatrobot-webhook/notifier"
+	"wechatrobot/model"
+	"wechatrobot/notifier"
 
 	"github.com/gin-gonic/gin"
 )
