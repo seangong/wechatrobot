@@ -10,25 +10,31 @@ import (
 // TransformToMarkdown transform alertmanager notification to wechat markdow message
 func TransformToMarkdown(notification model.Notification) (markdown *model.WeChatMarkdown, robotURL string, err error) {
 
-	status := notification.Status
-
 	annotations := notification.CommonAnnotations
 	robotURL = annotations["wechatRobot"]
 
 	var buffer bytes.Buffer
 
-	if status == "firing" {
-		buffer.WriteString(fmt.Sprintf("### <font color=\"warning\">告警触发 : %s</font>\n", status))
-	} else {
-		buffer.WriteString(fmt.Sprintf("### <font color=\"info\">告警恢复 : %s</font>\n", status))
-	}
-
 	for _, alert := range notification.Alerts {
 		labels := alert.Labels
 		annotations := alert.Annotations
 
-		buffer.WriteString(fmt.Sprintf("\n> **alertname:** <font color=\"warning\">%s</font>", labels["alertname"]))
+		if alert.Status == "firing" {
+			buffer.WriteString(fmt.Sprintf("### <font color=\"warning\">告警触发 : %s</font>\n", alert.Status))
+			buffer.WriteString(fmt.Sprintf("\n> **alertname:** <font color=\"warning\">%s</font>", labels["alertname"]))
+		} else {
+			buffer.WriteString(fmt.Sprintf("### <font color=\"info\">告警恢复 : %s</font>\n", alert.Status))
+			buffer.WriteString(fmt.Sprintf("\n> **alertname:** <font color=\"info\">%s</font>", labels["alertname"]))
+		}
+
 		buffer.WriteString(fmt.Sprintf("\n> **severity:** %s", labels["severity"]))
+
+		if alert.Status == "firing" {
+			buffer.WriteString(fmt.Sprintf("\n> **status:** <font color=\"warning\">%s</font>", alert.Status))
+		} else {
+			buffer.WriteString(fmt.Sprintf("\n> **status:** <font color=\"info\">%s</font>", alert.Status))
+		}
+
 		buffer.WriteString(fmt.Sprintf("\n> **instance:** %s", labels["instance"]))
 		buffer.WriteString(fmt.Sprintf("\n> **annotations:**\n **·** summary: <font color=\"comment\">%s</font>\n **·** description: %s", annotations["summary"], annotations["description"]))
 
@@ -43,7 +49,7 @@ func TransformToMarkdown(notification model.Notification) (markdown *model.WeCha
 			}
 		}
 
-		buffer.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>", alert.StartsAt.Format("2006-01-02 15:04:05")))
+		buffer.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>\n\n", alert.StartsAt.Format("2006-01-02 15:04:05")))
 	}
 
 	markdown = &model.WeChatMarkdown{
