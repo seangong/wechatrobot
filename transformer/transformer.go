@@ -17,18 +17,33 @@ func TransformToMarkdown(notification model.Notification) (markdown *model.WeCha
 
 	var buffer bytes.Buffer
 
-	buffer.WriteString(fmt.Sprintf("### 告警状态 : <font color=\"warning\">%s</font>\n", status))
+	if status == "firing" {
+		buffer.WriteString(fmt.Sprintf("### <font color=\"warning\">告警触发 : %s</font>\n", status))
+	} else {
+		buffer.WriteString(fmt.Sprintf("### <font color=\"info\">告警恢复 : %s</font>\n", status))
+	}
 
 	for _, alert := range notification.Alerts {
 		labels := alert.Labels
 		annotations := alert.Annotations
 
-		buffer.WriteString(fmt.Sprintf("\n> 告警名称: %s", labels["alertname"]))
-		buffer.WriteString(fmt.Sprintf("\n> 告警级别: %s", labels["severity"]))
-		buffer.WriteString(fmt.Sprintf("\n> 告警主题: %s", annotations["summary"]))
-		buffer.WriteString(fmt.Sprintf("\n> 告警详情: %s", annotations["description"]))
-		buffer.WriteString(fmt.Sprintf("\n> 故障主机: %s", labels["instance"]))
-		buffer.WriteString(fmt.Sprintf("\n> 触发时间: %s", alert.StartsAt.Format("2006-01-02 15:04:05")))
+		buffer.WriteString(fmt.Sprintf("\n> **alertname:** <font color=\"warning\">%s</font>", labels["alertname"]))
+		buffer.WriteString(fmt.Sprintf("\n> **severity:** %s", labels["severity"]))
+		buffer.WriteString(fmt.Sprintf("\n> **instance:** %s", labels["instance"]))
+		buffer.WriteString(fmt.Sprintf("\n> **annotations:**\n **·** summary: <font color=\"comment\">%s</font>\n **·** description: %s", annotations["summary"], annotations["description"]))
+
+		delete(labels, "alertname")
+		delete(labels, "severity")
+
+		if len(labels) > 0 {
+			buffer.WriteString("\n> **labels:**")
+			for label, value := range labels {
+				buffer.WriteString(fmt.Sprintf("\n **·** %s: %s", label, value))
+				fmt.Println(label, ":", value)
+			}
+		}
+
+		buffer.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>", alert.StartsAt.Format("2006-01-02 15:04:05")))
 	}
 
 	markdown = &model.WeChatMarkdown{
