@@ -10,7 +10,7 @@ import (
 	"wechatrobot/transformer"
 )
 
-// Send send markdown message to dingtalk
+// Send send markdown message to wechatrobot
 func Send(notification model.Notification, defaultRobot string) (err error) {
 
 	markdown, robotURL, err := transformer.TransformToMarkdown(notification)
