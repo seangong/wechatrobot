@@ -5,13 +5,13 @@ Convert alertmanger webhook messages to qiye WeChat robots that can receive mess
 ## How use
 
 ```
-./wechatbot --RobotKey="899220cd-5ed6-44ad-b053-f3785033da7d"
+./wechatbot --RobotKey="899220cd-5ed6-44ad-b053-f3785033da7f"
 ```
 
 or
 
 ```
-go run main.go --RobotKey="899220cd-5ed6-44ad-b053-f3785033da7d"
+go run main.go --RobotKey="899220cd-5ed6-44ad-b053-f3785033da7f"
 ```
 
 
