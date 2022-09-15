@@ -90,7 +90,7 @@ curl 'http://127.0.0.1:8999/webhook' -H 'Content-Type: application/json' -d '
   }'
 ```
 
-
+![default_robot](https://github.com/SeanGong/wechatrobot/blob/master/docs/images/default_robot.png)
 
 ### 2、使用指定微信机器人发送消息
 
@@ -133,6 +133,9 @@ curl 'http://127.0.0.1:8999/webhook?key=xxxxxx-xxxxx-xxxxx-xxxxxx-xxxxxxx' -H 'C
     "groupKey": "{}/{alertname=~\"^(?:test.*)$\"}:{alertname=\"altername test two\"}"
   }'
 ```
+
+![default_robot](https://github.com/SeanGong/wechatrobot/blob/master/docs/images/token_robot.png)
+
 
 ### 3、使用 alert 内容指定微信机器人发送消息
 
