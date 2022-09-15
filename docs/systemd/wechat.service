@@ -1,10 +1,10 @@
 [Unit]
-Description=wechatbot webhook service
+Description=wechat robot webhook service
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/wechatbot --RobotKey=xxxxxx-xxxxx-xxxxx-xxxxxx-xxxxxxx
+ExecStart=/usr/local/bin/wechatrobot --RobotKey=xxxxxx-xxxxx-xxxxx-xxxxxx-xxxxxxx
 ExecReload=/bin/kill -HUP $MAINPID
 
 SuccessExitStatus=143
