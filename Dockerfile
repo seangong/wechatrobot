@@ -1,7 +1,4 @@
 FROM --platform=linux/amd64 amd64/alpine:3.12.0
-#FROM --platform=linux/amd64 golang:1.17-alpine
-
-# docker pull golang:1.17-alpine@sha256:ad6c114a2c858710c4db54f6c89d0e76f753831f01827252064be0017612fecc
 
 ENV PATH /usr/local/bin:$PATH
 ENV LANG C.UTF-8
@@ -18,7 +15,7 @@ RUN apk update && apk upgrade \
     && mkdir -p /usr/sbin \
     && mkdir -p /data/wechat-webhook/
 
-ADD bin/wechat-webhook /usr/bin/
+ADD bin/wechatrobot /usr/bin/
 ADD start.sh /data/wechat-webhook/
 
 WORKDIR /data/wechat-webhook/

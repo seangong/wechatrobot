@@ -4,8 +4,8 @@ import (
 	"flag"
 	"net/http"
 
+	"wechatrobot/api"
 	"wechatrobot/model"
-	"wechatrobot/notifier"
 
 	"github.com/gin-gonic/gin"
 )
@@ -44,7 +44,7 @@ func main() {
 
 		RobotKey := c.DefaultQuery("key", RobotKey)
 
-		err = notifier.Send(notification, RobotKey)
+		err = api.Send(notification, RobotKey)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

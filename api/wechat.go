@@ -1,4 +1,4 @@
-package notifier
+package api
 
 import (
 	"bytes"
@@ -7,13 +7,13 @@ import (
 	"net/http"
 
 	"wechatrobot/model"
-	"wechatrobot/transformer"
+	"wechatrobot/pkg"
 )
 
 // Send send markdown message to wechatrobot
 func Send(notification model.Notification, defaultRobot string) (err error) {
 
-	markdown, robotURL, err := transformer.TransformToMarkdown(notification)
+	markdown, robotURL, err := pkg.TransformToMarkdown(notification)
 
 	if err != nil {
 		return

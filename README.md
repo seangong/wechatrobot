@@ -5,7 +5,7 @@
 ## 使用方法
 
 ```bash
-./wechatbot --RobotKey="899220cd-5ed6-44ad-b053-f3785033da7f"
+./wechatrobot --RobotKey="899220cd-5ed6-44ad-b053-f3785033da7f"
 ```
 
 or
@@ -21,9 +21,9 @@ alertmanager.yml
 
 ```yml
 receivers:
-- name: webhook-test                                                                                                           
-  webhook_configs:                                                                                                             
-  - url: 'http://127.0.0.1:8999/webhook?key=xxxxxx-xxxxx-xxxxx-xxxxxx-xxxxxxx'
+  - name: webhook-test                                                                                                           
+    webhook_configs:                                                                                                             
+      - url: 'http://127.0.0.1:8999/webhook?key=899220cd-5ed6-44ad-b053-f3785033da7f'
 ```
 
 prometheus rules configure
@@ -42,7 +42,7 @@ groups:
       description: '{{ $labels.instance }} of mountpoint {{ $labels.mountpoint }} has
         Critical CPU load for more than 2 minutes.'
       summary: Instance {{ $labels.instance }} - Critical CPU load
-      wechatRobot: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxx-xxxxxxxx-xxxxx-xxxxxx"
+      wechatRobot: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=899220cd-5ed6-44ad-b053-f3785033da7f"
 
 ```
 
