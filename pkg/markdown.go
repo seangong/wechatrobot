@@ -9,8 +9,8 @@ import (
 
 func Markdown(notification model.Notification) (markdown *model.WeChatMarkdown, robotURL string, err error) {
 
-	annotations := notification.CommonAnnotations
-	robotURL = annotations["wechatRobot"]
+	commonAnnotations := notification.CommonAnnotations
+	robotURL = commonAnnotations["wechatRobot"]
 
 	var (
 		buffer         bytes.Buffer
