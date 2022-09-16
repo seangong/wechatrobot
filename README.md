@@ -31,19 +31,19 @@ prometheus rules configure
 
 ```yml
 groups:
-- name: ansible managed alert rules
-  rules:
-  - alert: CriticalCPULoad
-    expr: (100 * (1 - avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) BY (instance)))
-      > 96
-    for: 2m
-    labels:
-      severity: critical
-    annotations:
-      description: '{{ $labels.instance }} of mountpoint {{ $labels.mountpoint }} has
-        Critical CPU load for more than 2 minutes.'
-      summary: Instance {{ $labels.instance }} - Critical CPU load
-      wechatRobot: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=899220cd-5ed6-44ad-b053-f3785033da7f"
+  - name: nodeAlerts
+    rules:
+    - alert: Node Down
+      expr: up{job="node"} == 0
+      for: 3m
+      labels:
+        severity: critical
+        instance: "{{ $labels.instance }}"
+      annotations:
+        summary: "{{ $labels.instance }} down"
+        description: "{{ $labels.instance }} 已宕机"
+        value: "{{ $value }}"
+        wechatRobot: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=899220cd-5ed6-44ad-b053-f3785033da7f"
 
 ```
 
