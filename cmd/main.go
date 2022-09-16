@@ -34,7 +34,6 @@ func main() {
 	router := gin.Default()
 	router.POST("/webhook", func(c *gin.Context) {
 		var notification model.Notification
-
 		err := c.BindJSON(&notification)
 
 		if err != nil {
@@ -43,7 +42,6 @@ func main() {
 		}
 
 		RobotKey := c.DefaultQuery("key", RobotKey)
-
 		err = api.Send(notification, RobotKey)
 
 		if err != nil {
@@ -52,7 +50,6 @@ func main() {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "send to wechatbot successful!"})
-
 	})
 	router.Run(addr)
 }
