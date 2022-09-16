@@ -19,7 +19,7 @@ var (
 func init() {
 	flag.BoolVar(&h, "h", false, "help")
 	flag.StringVar(&RobotKey, "RobotKey", "", "global wechatrobot webhook, you can overwrite by alert rule with annotations wechatRobot")
-	flag.StringVar(&addr, "addr", ":8999", "listen addr")
+	flag.StringVar(&addr, "addr", ":8989", "listen addr")
 }
 
 func main() {

@@ -15,7 +15,8 @@ RUN apk update && apk upgrade \
     && mkdir -p /usr/sbin \
     && mkdir -p /data/wechat-webhook/
 
-ADD bin/wechatrobot /usr/bin/
-ADD start.sh /data/wechat-webhook/
+ADD wechatrobot /usr/bin/
 
 WORKDIR /data/wechat-webhook/
+
+CMD ["./wechatrobot"]

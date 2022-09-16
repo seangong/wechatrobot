@@ -23,7 +23,7 @@ alertmanager.yml
 receivers:
   - name: webhook-test                                                                                                           
     webhook_configs:                                                                                                             
-      - url: 'http://127.0.0.1:8999/webhook?key=899220cd-5ed6-44ad-b053-f3785033da7f'
+      - url: 'http://127.0.0.1:8989/webhook?key=899220cd-5ed6-44ad-b053-f3785033da7f'
 ```
 
 prometheus rules configure
@@ -51,7 +51,7 @@ groups:
 ### 1、默认使用启动程序时微信机器人 token 发送消息
 
 ```json
-curl 'http://127.0.0.1:8999/webhook' -H 'Content-Type: application/json' -d '
+curl 'http://127.0.0.1:8989/webhook' -H 'Content-Type: application/json' -d '
 {
     "receiver":"webhook-test",
     "status":"firing",
@@ -95,7 +95,7 @@ curl 'http://127.0.0.1:8999/webhook' -H 'Content-Type: application/json' -d '
 ### 2、指定微信机器人 tocken 发送消息
 
 ```json
-curl 'http://127.0.0.1:8999/webhook?key=xxxxxx-xxxxx-xxxxx-xxxxxx-xxxxxxx' -H 'Content-Type: application/json' -d '
+curl 'http://127.0.0.1:8989/webhook?key=xxxxxx-xxxxx-xxxxx-xxxxxx-xxxxxxx' -H 'Content-Type: application/json' -d '
 {
     "receiver":"webhook-test",
     "status":"firing",
@@ -140,7 +140,7 @@ curl 'http://127.0.0.1:8999/webhook?key=xxxxxx-xxxxx-xxxxx-xxxxxx-xxxxxxx' -H 'C
 ### 3、同时发送多条告警消息
 
 ```json
-curl 'http://127.0.0.1:8999/webhook' -H 'Content-Type: application/json' -d '
+curl 'http://127.0.0.1:8989/webhook' -H 'Content-Type: application/json' -d '
 {
     "receiver":"webhook-test",
     "status":"firing",
@@ -194,7 +194,7 @@ curl 'http://127.0.0.1:8999/webhook' -H 'Content-Type: application/json' -d '
     "externalURL":"http://localhost:9093",
     "version":"4",
     "groupKey":"{}/{alertname=~\"^(?:test.*)$\"}:{alertname=\"altername test two\"}"
-}
+}'
 ```
 
 ![alerts_robot](https://github.com/SeanGong/wechatrobot/blob/master/docs/images/alerts_robot.png)
@@ -203,7 +203,7 @@ curl 'http://127.0.0.1:8999/webhook' -H 'Content-Type: application/json' -d '
 ### 4、alert 内容指定微信机器人 token
 
 ```json
-curl 'http://127.0.0.1:8999/webhook' -H 'Content-Type: application/json' -d '
+curl 'http://127.0.0.1:8989/webhook' -H 'Content-Type: application/json' -d '
 {
     "receiver":"webhook-test",
     "status":"firing",

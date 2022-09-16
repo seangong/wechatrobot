@@ -13,7 +13,7 @@ import (
 // Send send markdown message to wechatrobot
 func Send(notification model.Notification, defaultRobot string) (err error) {
 
-	markdown, robotURL, err := pkg.TransformToMarkdown(notification)
+	markdown, robotURL, err := pkg.Markdown(notification)
 
 	if err != nil {
 		return
