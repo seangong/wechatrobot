@@ -7,9 +7,9 @@ Type=simple
 ExecStart=/usr/local/bin/wechatrobot --RobotKey=xxxxxx-xxxxx-xxxxx-xxxxxx-xxxxxxx
 ExecReload=/bin/kill -HUP $MAINPID
 
-SuccessExitStatus=143
-TimeoutStopSec=1
 Restart=always
+RestartSec=5
+LimitNOFILE=2048
 
 [Install]
 WantedBy=multi-user.target
