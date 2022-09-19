@@ -1,6 +1,6 @@
 # wechatrobot
 
-通过 webhook 方法发送消息到企业微信群机器人。
+prometheus 告警使用 alertmanager 通过群机器人发送到企业微信群，消息使用 markdown 展示。该程序将企业微信群机器人 URL 转换为 alertmanger 易于配置的 webhook 方法。
 
 ## 使用方法
 
@@ -15,6 +15,10 @@ or
 go run main.go --RobotKey="899220cd-5ed6-44ad-b053-f3785033da7f"
 ```
 
+> 程序启动时传的 robotkey，是可以被 alertmanager.yml 中配置的 webhook url 中的 key 覆盖掉，如 http://127.0.0.1:8989/webhook?key=899220cd-5ed6-44ad-b053-f3785033da7f，即发送给指定的群机器人 899220cd-5ed6-44ad-b053-f3785033da7f。
+>
+> 如果 webhook 中不指定 robotkey，如 http://127.0.0.1:8989/webhook，则默认发送给程序启动时传的机器人 robotkey。
+
 
 ## 配置
 
@@ -27,25 +31,7 @@ receivers:
       - url: 'http://127.0.0.1:8989/webhook?key=899220cd-5ed6-44ad-b053-f3785033da7f'
 ```
 
-prometheus rules configure
 
-```yml
-groups:
-  - name: nodeAlerts
-    rules:
-    - alert: Node Down
-      expr: up{job="node"} == 0
-      for: 3m
-      labels:
-        severity: critical
-        instance: "{{ $labels.instance }}"
-      annotations:
-        summary: "{{ $labels.instance }} down"
-        description: "{{ $labels.instance }} 已宕机"
-        value: "{{ $value }}"
-        wechatRobot: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=899220cd-5ed6-44ad-b053-f3785033da7f"
-
-```
 
 ## 测试
 
@@ -202,6 +188,26 @@ curl 'http://127.0.0.1:8989/webhook' -H 'Content-Type: application/json' -d '
 
 
 ### 4、alert 内容指定微信机器人 token
+
+prometheus rules configure
+
+```yml
+groups:
+  - name: nodeAlerts
+    rules:
+    - alert: Node Down
+      expr: up{job="node"} == 0
+      for: 3m
+      labels:
+        severity: critical
+        instance: "{{ $labels.instance }}"
+      annotations:
+        summary: "{{ $labels.instance }} down"
+        description: "{{ $labels.instance }} 已宕机"
+        value: "{{ $value }}"
+        wechatRobot: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=899220cd-5ed6-44ad-b053-f3785033da7f"
+
+```
 
 ```json
 curl 'http://127.0.0.1:8989/webhook' -H 'Content-Type: application/json' -d '
