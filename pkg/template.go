@@ -20,11 +20,16 @@ func MarkdownTemplate(buf *bytes.Buffer, labels *map[string]string, annotations 
 
 	buf.WriteString(fmt.Sprintf("\n> **alertname: <font color=\"%s\">%s</font>**", color, (*labels)["alertname"]))
 	buf.WriteString(fmt.Sprintf("\n> **severity:** %s", (*labels)["severity"]))
-	buf.WriteString(fmt.Sprintf("\n> **status:** <font color=\"%s\">%s</font>", color, alert.Status))
-	buf.WriteString(fmt.Sprintf("\n> **instance:** %s", (*labels)["instance"]))
+	buf.WriteString(fmt.Sprintf("\n> **status: <font color=\"%s\">%s</font>**", color, alert.Status))
+
+	if value, ok := (*labels)["instance"]; ok {
+		buf.WriteString(fmt.Sprintf("\n> **instance:** %s", value))
+	}
+
 	delete((*labels), "alertname")
 	delete((*labels), "severity")
-	MapToString(buf, "annotations", annotations)
+
 	MapToString(buf, "labels", labels)
+	MapToString(buf, "annotations", annotations)
 	buf.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>\n", alert.StartsAt.Format("2006-01-02 15:04:05")))
 }
