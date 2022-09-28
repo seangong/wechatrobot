@@ -17,7 +17,6 @@ func MapToString(buf *bytes.Buffer, name string, data *map[string]string) {
 }
 
 func MarkdownTemplate(buf *bytes.Buffer, labels *map[string]string, annotations *map[string]string, alert *model.Alert, color string) {
-
 	buf.WriteString(fmt.Sprintf("\n> **alertname: <font color=\"%s\">%s</font>**", color, (*labels)["alertname"]))
 	buf.WriteString(fmt.Sprintf("\n> **severity:** %s", (*labels)["severity"]))
 	buf.WriteString(fmt.Sprintf("\n> **status: <font color=\"%s\">%s</font>**", color, alert.Status))
@@ -31,5 +30,10 @@ func MarkdownTemplate(buf *bytes.Buffer, labels *map[string]string, annotations 
 
 	MapToString(buf, "labels", labels)
 	MapToString(buf, "annotations", annotations)
-	buf.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>\n", alert.StartsAt.Format("2006-01-02 15:04:05")))
+
+	if alert.Status == "firing" {
+		buf.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>\n", alert.StartsAt.Format("2006-01-02 15:04:05")))
+	} else {
+		buf.WriteString(fmt.Sprintf("\n> **time:** <font color=\"comment\">%s</font>\n", alert.EndsAt.Format("2006-01-02 15:04:05")))
+	}
 }
