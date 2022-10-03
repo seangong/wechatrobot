@@ -14,11 +14,13 @@ var (
 	h        bool
 	RobotKey string
 	addr     string
+	proxy    string
 )
 
 func init() {
 	flag.BoolVar(&h, "h", false, "help")
-	flag.StringVar(&RobotKey, "RobotKey", "", "global wechatrobot webhook, you can overwrite by alert rule with annotations wechatRobot")
+	flag.StringVar(&proxy, "proxy", "", "http proxy url")
+	flag.StringVar(&RobotKey, "RobotKey", "", "wechatrobot token")
 	flag.StringVar(&addr, "addr", ":8989", "listen addr")
 }
 
@@ -31,7 +33,10 @@ func main() {
 		return
 	}
 
+	// gin 框架
 	router := gin.Default()
+
+	// 接收 post 请求，路由为 webhook
 	router.POST("/webhook", func(c *gin.Context) {
 		var notification model.Notification
 		err := c.BindJSON(&notification)
@@ -41,8 +46,11 @@ func main() {
 			return
 		}
 
+		// 获取机器人 token
 		RobotKey := c.DefaultQuery("key", RobotKey)
-		err = api.Send(notification, RobotKey)
+
+		// 发送 post 请求到机器人接口，支持通过代理访问机器人
+		err = api.Send(notification, RobotKey, proxy)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
