@@ -12,11 +12,34 @@ import (
 	"wechatrobot/pkg"
 )
 
+func InitClient(proxy string) (client *http.Client) {
+	// 是否使用代理
+	if proxy != "" {
+		proxyURL, err := url.Parse(proxy)
+
+		if err != nil {
+			fmt.Printf("InitClient: %s\n", err)
+			return
+		}
+
+		// 实例化使用代理的 http 客户端
+		client = &http.Client{
+			Transport: &http.Transport{
+				Proxy:           http.ProxyURL(proxyURL),
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // 跳过 https 不安全验证
+			},
+		}
+	} else {
+		// 实例化 http 客户端
+		client = &http.Client{}
+	}
+	return client
+}
+
 // Send send markdown message to wechatrobot
-func Send(notification model.Notification, defaultRobot string, proxy string) (err error) {
+func Send(notification model.Notification, defaultRobot string, client *http.Client) (err error) {
 	var (
 		wechatRobotURL string
-		client         *http.Client
 	)
 
 	// 获取 markdown 消息结构体 和 机器人 url
@@ -51,23 +74,7 @@ func Send(notification model.Notification, defaultRobot string, proxy string) (e
 	// 设置 Content-Type 请求头
 	req.Header.Set("Content-Type", "application/json")
 
-	// 是否使用代理
-	if proxy != "" {
-		proxyURL, _ := url.Parse(proxy)
-
-		// 实例化使用代理的 http 客户端
-		client = &http.Client{
-			Transport: &http.Transport{
-				Proxy:           http.ProxyURL(proxyURL),
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // 跳过 https 不安全验证
-			},
-		}
-	} else {
-		// 实例化 http 客户端
-		client = &http.Client{}
-	}
-
-	// post 请求机器接口
+	// 请求机器人接口
 	resp, err := client.Do(req)
 
 	if err != nil {

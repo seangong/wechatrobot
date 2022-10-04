@@ -33,6 +33,8 @@ func main() {
 		return
 	}
 
+	client := api.InitClient(proxy)
+
 	// gin 框架
 	router := gin.Default()
 
@@ -49,8 +51,8 @@ func main() {
 		// 获取机器人 token
 		RobotKey := c.DefaultQuery("key", RobotKey)
 
-		// 发送 post 请求到机器人接口，支持通过代理访问机器人
-		err = api.Send(notification, RobotKey, proxy)
+		// 发送请求到机器人接口，支持通过代理访问机器人
+		err = api.Send(notification, RobotKey, client)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
