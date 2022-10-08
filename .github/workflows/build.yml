@@ -1,0 +1,18 @@
+
+name: build
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+          language: ["go"]
+
+    steps:
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
