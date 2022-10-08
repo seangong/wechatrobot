@@ -38,7 +38,7 @@ jobs:
         uses: github/codeql-action/autobuild@v1
 
       - name: Packaging
-        run: tar czf wechatrobot-${{ matrix.goos }}-${{ matrix.goarch }}.tgz kubectl-karmada LICENSE
+        run: tar czf wechatrobot-${{ matrix.goos }}-${{ matrix.goarch }}.tgz wechatrobot README.md
 
       - name: Uploading assets
         if: ${{ !env.ACT }}
