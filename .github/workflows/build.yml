@@ -40,7 +40,7 @@ jobs:
         run: |
           pwd
           ls -l
-          tar czf /wechatrobot/wechatrobot-${{ matrix.goos }}-${{ matrix.goarch }}.tgz wechatrobot README.md
+          tar czf wechatrobot-${{ matrix.goos }}-${{ matrix.goarch }}.tgz wechatrobot-${{ matrix.goos }}-${{ matrix.goarch }} README.md
 
       - name: Release
         if: ${{ !env.ACT }}
